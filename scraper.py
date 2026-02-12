@@ -12,7 +12,11 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefm
 log = logging.getLogger(__name__)
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
-API_KEY        = "9a89b06d71262c1f7f0a3f710ba4fd2a4032df5acdf73332a97284bb26edce12"
+import os
+
+API_KEY = os.getenv("SERPAPI_KEY")
+if not API_KEY:
+    raise RuntimeError("SERPAPI_KEY not set in environment variables")
 TARGET         = 50
 MAX_CONCURRENT = 8
 HEADERS        = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0"}
@@ -198,4 +202,5 @@ async def main():
     log.info(f"Done — {len(df)} records, {found} emails ({found/max(len(df),1)*100:.0f}%)")
 
 if __name__ == "__main__":
+
     asyncio.run(main())
